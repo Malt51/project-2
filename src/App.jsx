@@ -1,0 +1,125 @@
+
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import NavBar from './Navbar';
+import InputBar from './inputbar';
+import Api from './Api';
+
+function App() {
+  const [swapiData, setSwapiData] = useState([]);
+  const [airtableData, setAirtableData] = useState([]);
+  const handleInputChange = (inputValue) => {};
+
+  useEffect(() => {
+    const fetchSwapiData = async () => {
+      try {
+        const response = await axios.get('https://swapi.dev/api/people/');
+        setSwapiData(response.data.results);
+      } catch (error) {
+        console.error('Error fetching SWAPI data:', error);
+      }
+    };
+
+    fetchSwapiData();
+  }, []);
+
+  useEffect(() => {
+    const postToAirtable = async (data) => {
+      try {
+        const apiKey = '';
+        const airtableApiUrl = 'https://api.airtable.com/v0/app3BgHWINCCOy5Ww/tblbNY9NDwTiEsJ3u';
+
+        const formattedData = data.map(person => ({
+          fields: {
+            name: person.name,
+            height: person.height,
+            mass: person.mass,
+          }
+        }));
+
+        await Promise.all(formattedData.map(async (item) => {
+          await axios.post(airtableApiUrl, item, {
+            headers: {
+              'Authorization': `Bearer ${apiKey}`,
+              'Content-Type': 'application/json'
+            }
+          });
+        }));
+
+        console.log('Data posted to Airtable successfully');
+      } catch (error) {
+        console.error('Error posting data to Airtable:', error);
+      }
+    };
+
+    if (swapiData.length > 0) {
+      postToAirtable(swapiData);
+    }
+  }, [swapiData]);
+
+  useEffect(() => {
+    const fetchAirtableData = async () => {
+      try {
+        const apiKey = '';
+        const airtableApiUrl = 'https://api.airtable.com/v0/app3BgHWINCCOy5Ww/tblbNY9NDwTiEsJ3u';
+
+        const response = await axios.get(airtableApiUrl, {
+          headers: {
+            'Authorization': `Bearer ${apiKey}`
+          }
+        });
+
+        const uniqueNames = new Set();
+        const filteredData = response.data.records.filter(record => {
+          if (uniqueNames.has(record.fields.name)) {
+            return false; 
+          } else {
+            uniqueNames.add(record.fields.name); 
+            return true; 
+          }
+        });
+
+        setAirtableData(filteredData);
+      } catch (error) {
+        console.error('Error fetching data from Airtable:', error);
+      }
+    };
+
+    fetchAirtableData();
+  }, []);
+
+  return (
+    <Router>
+      <div>
+        <h1>Star Wars Mini Wiki</h1>
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/api" element={<Api airtableData={airtableData} />} /> {/* Pass airtableData as a prop */}
+        </Routes>
+      </div>
+      <InputBar onInputChange={handleInputChange} airtableData={airtableData} />
+    </Router>
+  );
+}
+
+function Home() {
+  return (
+    <div>
+     {/* <InputBar onInputChange={handleInputChange} airtableData={airtableData} /> */}
+     
+
+    </div>
+  );
+}
+
+export default App;
+
+
+
+
+
+
+
