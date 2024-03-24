@@ -17,7 +17,7 @@ const InputBar = ({ onInputChange, airtableData }) => {
     });
     setSearchResults(filteredResults);
   };
-
+    
   return (
     <div>
       <input
@@ -26,18 +26,17 @@ const InputBar = ({ onInputChange, airtableData }) => {
         onChange={handleChange}
         placeholder="Type something..."
       />
-      {/* Render search results */}
-      <ul>
-        {searchResults.map((record, index) => (
-          <li key={index}>
-            {/* Customize how you want to display the search results */}
-            Name:{record.fields.name}
-            Height :{record.fields.height}
-            Mass : {record.fields.mass}
-
-          </li>
-        ))}
-      </ul>
+      {/* Conditionally render search results */}
+      {inputValue !== '' && (
+        <ul>
+          {searchResults.map((record, index) => (
+            <li key={index}>
+              {/* Customize how you want to display the search results */}
+              Name: {record.fields.name}, Height: {record.fields.height}, Mass: {record.fields.mass}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };

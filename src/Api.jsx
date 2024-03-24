@@ -1,8 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import "./App.css";
-import App from './App';
-
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Api({ airtableData }) {
   return (
@@ -11,7 +8,11 @@ function Api({ airtableData }) {
       <ul>
         {airtableData.map((record, index) => (
           <div key={index}>
-            <strong>Name:</strong> {record.fields.name} <br />
+            {/* Wrap the name in a Link component */}
+            <Link to={"/details/" + record.fields.name}>
+              <strong>Name:</strong> {record.fields.name}
+            </Link>
+            <br />
             <strong>Height:</strong> {record.fields.height} <br />
             <strong>Mass:</strong> {record.fields.mass}
           </div>
@@ -22,25 +23,3 @@ function Api({ airtableData }) {
 }
 
 export default Api;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
