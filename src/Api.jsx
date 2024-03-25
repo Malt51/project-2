@@ -8,7 +8,7 @@ function Api({ airtableData }) {
       <ul>
         {airtableData.map((record, index) => (
           <div key={index}>
-            {/* Wrap the name in a Link component */}
+            
             <Link to={"/details/" + record.fields.name}>
               <strong>Name:</strong> {record.fields.name}
             </Link>

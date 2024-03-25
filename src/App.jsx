@@ -9,6 +9,7 @@ import Api from './Api';
 import Picture from './Picture';
 import DetailsPage from './DetailsPage';
 
+const viteToken = import.meta.env.VITE_APP_TOKEN_URL
 function App() {
   const [swapiData, setSwapiData] = useState([]);
   const [airtableData, setAirtableData] = useState([]);
@@ -30,7 +31,7 @@ function App() {
   useEffect(() => {
     const postToAirtable = async (data) => {
       try {
-        const apiKey = 'patFakmHnqFyPgUK5.b50b7687c1ac2e15cf20250e12fa3e445c70ff8d45ce768bada41876e0600842';
+        const apiKey = ``;
         const airtableApiUrl = 'https://api.airtable.com/v0/app3BgHWINCCOy5Ww/tblbNY9NDwTiEsJ3u';
 
         const formattedData = data.map(person => ({
@@ -65,7 +66,7 @@ function App() {
   useEffect(() => {
     const fetchAirtableData = async () => {
       try {
-        const apiKey = 'patFakmHnqFyPgUK5.b50b7687c1ac2e15cf20250e12fa3e445c70ff8d45ce768bada41876e0600842';
+        const apiKey = '';
         const airtableApiUrl = 'https://api.airtable.com/v0/app3BgHWINCCOy5Ww/tblbNY9NDwTiEsJ3u';
 
         const response = await axios.get(airtableApiUrl, {
@@ -103,7 +104,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/api" element={<Api airtableData={airtableData} />} /> {/* Pass airtableData as a prop */}
           <Route path="/picture" element={<Picture airtableData={airtableData} />} />
-          <Route path="/details/:name" element={<DetailsPage />} /> {/* Add this route */}
+          <Route path="/details/:name" element={<DetailsPage airtableData={airtableData} />} />
         </Routes>
       </div>
       
@@ -114,7 +115,7 @@ function App() {
 function Home() {
   return (
     <div>
-     {/* <InputBar onInputChange={handleInputChange} airtableData={airtableData} /> */}
+    
      
 
     </div>
