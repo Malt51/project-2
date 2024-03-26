@@ -9,16 +9,20 @@ import Api from './Api';
 import Picture from './Picture';
 import DetailsPage from './DetailsPage';
 
-const viteToken = import.meta.env.VITE_APP_TOKEN_URL
+
 function App() {
   const [swapiData, setSwapiData] = useState([]);
   const [airtableData, setAirtableData] = useState([]);
   const handleInputChange = (inputValue) => {};
+  // const viteToken = import.meta.env.VITE_TOKEN
+  // console.log(viteToken)
 
   useEffect(() => {
     const fetchSwapiData = async () => {
       try {
         const response = await axios.get('https://swapi.dev/api/people/');
+        const viteToken = import.meta.env.VITE_TOKEN
+        console.log(viteToken)
         setSwapiData(response.data.results);
       } catch (error) {
         console.error('Error fetching SWAPI data:', error);
@@ -31,7 +35,7 @@ function App() {
   useEffect(() => {
     const postToAirtable = async (data) => {
       try {
-        const apiKey = ``;
+        const apiKey = `patdT2DOiLfyGLfnr.b2be40ce8565d03878aa5e2596a050b2adf9a781111768a782e9a45949f5b0df`;
         const airtableApiUrl = 'https://api.airtable.com/v0/app3BgHWINCCOy5Ww/tblbNY9NDwTiEsJ3u';
 
         const formattedData = data.map(person => ({
@@ -66,7 +70,7 @@ function App() {
   useEffect(() => {
     const fetchAirtableData = async () => {
       try {
-        const apiKey = '';
+        const apiKey = 'patdT2DOiLfyGLfnr.b2be40ce8565d03878aa5e2596a050b2adf9a781111768a782e9a45949f5b0df';
         const airtableApiUrl = 'https://api.airtable.com/v0/app3BgHWINCCOy5Ww/tblbNY9NDwTiEsJ3u';
 
         const response = await axios.get(airtableApiUrl, {
